@@ -1,6 +1,7 @@
 const User = require("../Modeles/User")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { use } = require("../Routes/Apartment")
 
 const login = async (req, res) => {
     const { username, password } = req.body
@@ -26,7 +27,7 @@ const login = async (req, res) => {
         email: foundUser.email
     };
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken: accessToken })
+    res.json({ accessToken: accessToken ,user: userInfo, role: foundUser.roles })
 
 
 }

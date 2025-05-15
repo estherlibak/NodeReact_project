@@ -6,7 +6,7 @@ const managerJWT = require('../middleWare/managerJWT');
 const {getAllUsers,getUserById,createNewUser,updateUser,deleteUser}=require("../Controller/UserController")
 
 
-router.get("/",verifyJWT,getAllUsers)
+router.get("/",getAllUsers)
 router.get("/:_id",verifyJWT,getUserById)
 // router.post("/",createNewUser)
 router.put("/",verifyJWT,updateUser)
