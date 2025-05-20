@@ -8,7 +8,7 @@ const apartmentController=require("../Controller/ApartmentController")
 
 router.get("/",apartmentController.getAllApartments)
 router.get("/:id",verifyJWT,apartmentController.getApartmentById)
-router.get("/user/:id",verifyJWT,apartmentController.getApartmentByUserId)
+router.get("/user/:id",apartmentController.getApartmentByUserId)
 router.post("/",apartmentController.createNewApartment)
 router.post("/login",apartmentController.logInApartment)
 router.put('/',verifyJWT,apartmentController.updateApartment)
