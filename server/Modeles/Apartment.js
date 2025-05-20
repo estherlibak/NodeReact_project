@@ -31,7 +31,7 @@ const apartment=new mongoose.Schema({
     },
     img:{
         type:[String],
-        difault:[],
+        default:[],
         required:false,
     },
     size:{

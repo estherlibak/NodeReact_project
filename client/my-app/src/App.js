@@ -18,7 +18,7 @@ function App() {
 
       <Routes>
         {/* נתיב ברירת מחדל לדף ההתחברות */}
-        <Route path='/' element={role === "User" ? <Navigate to="/home" /> : <LoginDemo />} />
+        <Route path='/' element={<LoginDemo />} />
 
         {/* נתיב לדף הבית */}
         {/* <Route path='/home' element={<Home />} /> */}

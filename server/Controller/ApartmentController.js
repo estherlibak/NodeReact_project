@@ -7,6 +7,8 @@ const { createNewUser } = require("./UserController")
 //הוספת דירה חדשה
 const createNewApartment = async (req, res) => {
     const { user, city, neighborhood, street, building, floor, price, img, size, numOfRooms, airDirections, discreption, options } = req.body
+   
+   console.log( user, city, neighborhood, street, building, floor, price, size, numOfRooms, airDirections, discreption, options )
     if (!user || !city || !neighborhood || !street || !building || !floor || !price || !size || !numOfRooms || !airDirections || !discreption || !options)
         return res.status(400).json({ message: 'Missing required fields' })
 
@@ -107,21 +109,25 @@ const updateApartment = async (req, res) => {
     res.json(`'${updatedApartment.user} 'updated`)
 }
 const deleteApartment = async (req, res) => {
+    console.log(req.body)
     const { _id } = req.body
+
     if (!_id) {
         return res.status(400).json({ message: 'Apartment ID is required' });
     }
 
 
     const apartment = await Apartment.findById(_id).exec()
+    console.log(apartment)
     if (!apartment)
         return res.status(400).json({ message: 'apartment not found' })
 
     if (apartment.user.toString() !== req.user._id&&'Manager'==!req.user.roles) {
         return res.status(403).json({ message: 'You are not authorized to delete this apartment' });
     }
-    await Apartment.deleteOne({ _id })
-    res.json({ message: `Apartment '${_id}' deleted successfully` });
+    var a=await Apartment.deleteOne({ _id })
+    console.log(a)
+    // res.json({ message: `Apartment '${_id}' deleted successfully` });
 }
 // const deleteApartment = async (req, res) => {
 //     const { _id } = req.body

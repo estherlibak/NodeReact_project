@@ -5,7 +5,6 @@ import { Button } from 'primereact/button';
 import SignUp from './SignUp';
 import {useDispatch,useSelector} from 'react-redux'
 import { useNavigate } from "react-router-dom";
-import EmptyPage from '../Empy';
 import Home from '../Home';
 import axios from 'axios';
 import { setUser } from '../../redux/tokenSlice';
@@ -17,7 +16,6 @@ import { useEffect } from 'react';
 export default function LoginDemo() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [showSignUp, setShowSignUp] = useState(false); // ניהול הצגת קומפוננטת ההרשמה
     const navigate = useNavigate(); // יצירת פונקציית ניווט
     const dispatch=useDispatch();
 
@@ -33,7 +31,7 @@ export default function LoginDemo() {
                 dispatch(setRole(response.data.role)); // עדכון הסטור של התפקיד
                 console.log('Token:', response.data.accessToken);
                 // setIsLoggedIn(true); // עדכון מצב הכניסה
-                navigate('/allApartments'); // נווט לדף הבית
+                navigate('/Home'); // נווט לדף הבית
 
                 // נווט לדף הבית
                 // if (!response.ok) {

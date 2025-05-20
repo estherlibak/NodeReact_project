@@ -12,7 +12,7 @@ router.get("/user/:id",apartmentController.getApartmentByUserId)
 router.post("/",apartmentController.createNewApartment)
 router.post("/login",apartmentController.logInApartment)
 router.put('/',verifyJWT,apartmentController.updateApartment)
-router.delete('/delete',verifyJWT,apartmentController.deleteApartment)
+router.delete('/delete',apartmentController.deleteApartment)
 router.put('/',verifyJWT,managerJWT,apartmentController.logInApartment)
 router.put('/confirm',verifyJWT,managerJWT,apartmentController.ApartmentConfirm)
 

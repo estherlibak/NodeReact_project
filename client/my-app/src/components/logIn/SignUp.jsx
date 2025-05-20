@@ -47,41 +47,7 @@ export default function Sinup() {
         // }
     };
 
-        // שליחת בקשה לשרת
-        // fetch('http://localhost:1100/api/user', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ name, username, password, phone, email }), // שליחת שם משתמש וסיסמה
-        // })
-        //     .then((response) => {
-        //         console.log('Response status:', response.status);
 
-        //         if (!response.ok) {
-        //             throw new Error('Failed to sign up');
-        //         }
-        //         return response.json();
-        //     })
-        //     .then((data) => {
-        //         console.log('Sign Up successful:', data);
-        //         setVisible(false); // סגירת הדיאלוג לאחר הצלחה
-        //         resetFields(); // איפוס השדות
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
-    
-    // const [posts, setPosts] = useState([])
-
-    // const fetchPosts = async (data) => {
-    //     const all = await axios.get('http://localhost:1100/api/user');
-    //     setPosts(all.data);
-    //     console.log(all.data)
-    // }
-    // useEffect(() => {
-    //     fetchPosts()
-    // }, [])
 
     return (
         <div className="card flex justify-content-center">
@@ -90,8 +56,7 @@ export default function Sinup() {
                 color="primary"
                 icon="pi pi-user-plus"
                 onClick={()=>setVisible(true)} // פתיחת הדיאלוג
-            //resetFields(); // איפוס השדות לפני פתיחת הדיאלוג
-            // setVisible(true); // פתיחת הדיאלוג
+           
             />
             <Dialog
                 header="Sign Up"

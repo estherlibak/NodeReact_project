@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import axios from 'axios';
-import { Dialog } from 'primereact/dialog';
-
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import CreateNewApartment from './CreateNewApartment';
 import 'primeicons/primeicons.css';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeflex/primeflex.css';
+
 
 
 export default function MyApartments() {
@@ -13,12 +18,18 @@ export default function MyApartments() {
     // const [updateApartment,setUpdategeApartment]=useState([])
     const [selectedApartment, setSelectedApartment] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const [isAddApartmentVisible, setIsAddApartmentVisible] = useState(false);
+
+
+    const userId = useSelector((state) => state.token.user?._id); // קבלת מזהה המשתמש מהסטור
 
     useEffect(() => {
-        fetchApartments();
-    }, []);
-    const fetchApartments = () => {
-        axios.get('http://localhost:1100/api/apartment/user/327607099')
+        if (userId) {
+            fetchApartments(userId);
+        }
+    }, [userId]);
+    const fetchApartments = async (id) => {
+        await axios.get(`http://localhost:1100/api/apartment/user/${id}`)
             .then((response) => {
                 setAllApartments(response.data);
                 console.log(response.data);
@@ -29,8 +40,8 @@ export default function MyApartments() {
 
     };
     // פונקציה לעדכון דירה
-    const handleUpdate = (apartment) => {
-        axios.post(`http://localhost:1100/api/apartment/update/${apartment._id}`, apartment)
+    const handleUpdate = async (apartment) => {
+        await axios.post(`http://localhost:1100/api/apartment/update/${apartment._id}`, apartment)
             .then((response) => {
                 console.log('Apartment updated:', response.data);
                 // עדכון רשימת הדירות לאחר ההצלחה
@@ -43,8 +54,11 @@ export default function MyApartments() {
             });
     }
     // פונקציה למחיקת דירה
-    const handleDelete = (apartment) => {
-        axios.delete(`http://localhost:1100/api/apartment/delete/${apartment._id}`)
+    const handleDelete = async (apartment) => {
+        await axios.delete(`http://localhost:1100/api/apartment/delete`, {
+            data: { _id: apartment._id } // שליחת ה-_id בתוך data
+
+        })
             .then((response) => {
                 console.log('Apartment deleted:', response.data);
                 // עדכון רשימת הדירות לאחר ההצלחה
@@ -56,6 +70,7 @@ export default function MyApartments() {
                 console.error('Error deleting apartment:', error);
             });
     }
+
 
     return (
 
@@ -73,24 +88,18 @@ export default function MyApartments() {
                         footer={
                             <div className="flex justify-content-between">
                                 <Button
-                                    label="Details"
-                                    icon="pi pi-info"
+                                    label="Details" icon="pi pi-info"
                                     onClick={() => {
                                         setSelectedApartment(apartment); // שמירת הדירה שנבחרה
                                         setIsModalVisible(true); // הצגת המודאל
                                     }}
                                 />
                                 <Button
-                                    label="Update"
-                                    className="p-button-secondary"
-                                    icon="pi-pencil"
+                                    label="Update" className="p-button-secondary" icon="pi-pencil"
                                     onClick={() => handleUpdate(apartment)}
                                 />
-                                <Button
-                                    label="Delete"
-                                    icon="pi-trash"
-                                    className="p-button-danger"
-                                    onClick={() => handleDelete(apartment._id)}
+                                <Button label="Delete" icon="pi-trash" className="p-button-danger"
+                                    onClick={() => handleDelete(apartment)}
                                 />
                             </div>
                         }
@@ -101,8 +110,15 @@ export default function MyApartments() {
                     </Card>
                 ))
             )}
-
+            <Button label="Add Apartment" icon="pi pi-plus" onClick={() => setIsAddApartmentVisible(true)} />
+            {isAddApartmentVisible && (
+                <CreateNewApartment
+                    onClose={() => setIsAddApartmentVisible(false)}
+                />
+            )}
         </div>
+
+
     )
 }
 
