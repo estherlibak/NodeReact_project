@@ -33,7 +33,7 @@ const updateMyApartment=async(req,res)=>{
     res.json(`'${updatedMyApartment.city} 'updated`)
 }
 const deleteMyApartment=async (req,res)=>{
-    const{_id}=req.body
+    const{_id}=req.params
     const myApartment=await MyApartment.findById(_id).exec()
     if(!myApartment)
         return res.status(400).json({message:'myApartment not found'})

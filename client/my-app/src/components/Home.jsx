@@ -34,7 +34,7 @@ export default function Home() {
         {
             label: 'Home',
             icon: 'pi pi-home',
-            command : () => navigate("/Home")
+            command : () => navigate("/allApartments")
         },
         {
             label: 'MyApartments',
@@ -61,7 +61,7 @@ export default function Home() {
 
             <Menubar model={items} end={end} />
             {/* הצגת AllApartments רק אם המשתמש מחובר */}
-            <AllApartments />
+            {/* <AllApartments /> */}
         </div>
     )
 }

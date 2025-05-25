@@ -3,27 +3,36 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Dialog } from 'primereact/dialog';
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function AllApartments() {
     const [allApartments, setAllApartments] = useState([]);
     const [selectedApartment, setSelectedApartment] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const { token, role, user } = useSelector((state) => state.token);
+    const getApartments = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:1100/api/apartment',
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
 
+            setAllApartments(data);
+            console.log(data);
+        }
+        catch (error) {
+            console.error('Error fetching apartments:', error);
+        }
+    }
+
+    
     useEffect(() => {
-        axios.get('http://localhost:1100/api/apartment')
-            .then((response) => {
-                setAllApartments(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching apartments:', error);
-            });
+        getApartments();
 
     }, [])
     return (
 
         <div className="card flex justify-content-center flex-wrap gap-3">
-            {allApartments.map((apartment) => (
+            {allApartments && allApartments.map(apartment => (
 
                 <Card
                     key={apartment._id} // ודא שלכל דירה יש מזהה ייחודי

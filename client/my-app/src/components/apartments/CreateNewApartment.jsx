@@ -12,7 +12,7 @@ import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 
 
-const CreateNewApartment = ({ onClose }) => {
+const CreateNewApartment = ({ getApartments }) => {
 
 
     // const [visible, setVisible] = useState(false)
@@ -29,8 +29,11 @@ const CreateNewApartment = ({ onClose }) => {
     const [description, setDescription] = useState('');
     const [airDirections, setAirDirections] = useState('');
     const [options, setOptions] = useState('');
+
+    const { token, role, user } = useSelector((state) => state.token);
+
     const userId = useSelector((state) => state.token.user?._id); // קבלת מזהה המשתמש מהסטור
-    const addApartment = () => {
+    const addApartment = async () => {
         const apartmentData = {
             user: userId,
             city,
@@ -47,17 +50,22 @@ const CreateNewApartment = ({ onClose }) => {
 
 
         }
-        axios.post('http://localhost:1100/api/apartment/', apartmentData)
-            .then((response) => {
-                console.log('Apartment added:', response.data);
-                resetFields(); // איפוס השדות לאחר ההצלחה
-                alert('Apartment added successfully!');
+        try {
+            const { data } = await axios.post('http://localhost:1100/api/apartment/', apartmentData,
+                { headers: { Authorization: `Bearer ${token}` } }
 
-            })
-            .catch((error) => {
-                console.error('Error adding apartment:', error);
-                alert(error.response?.data?.message || 'Failed to add apartment. Please try again.');
-            });
+            )
+            console.log('Apartment added:', data);
+            resetFields(); // איפוס השדות לאחר ההצלחה
+            getApartments();
+            alert('Apartment added successfully!');
+        }
+        catch (error) {
+            console.error('Error adding apartment:', error);
+            alert(error.response?.data?.message || 'Failed to add apartment. Please try again.');
+        };
+        // <CreateNewApartment/>
+
     }
 
 
@@ -86,7 +94,8 @@ const CreateNewApartment = ({ onClose }) => {
                     modal
                     onHide={() => {
                         resetFields(); // איפוס השדות כאשר הדיאלוג נסגר
-                        onClose(); // סגירת הדיאלוג
+                        setVisible(false)
+                        ha
                     }}
                 >
                     <div className="flex flex-column gap-3">
