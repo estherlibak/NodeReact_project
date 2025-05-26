@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useDispatch, useSelector } from 'react-redux'
 import AllApartments from './components/apartments/AllApartments';
 import MyApartments from './components/apartments/MyApartments';
+import MyFavorite from './components/apartments/myFavorite/MyFavoriteApartment';
 // import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         {/* <Route path='/home' element={<Home />} /> */}
         <Route path='/allApartments' element={<AllApartments />} />
         <Route path='/myApartments' element={<MyApartments />} />
+        <Route path ='/myFavorite' element={<MyFavorite/>}/>
 
         {/* נתיב לדף ריק */}
         <Route path='/empty' element={<EmptyPage />} />

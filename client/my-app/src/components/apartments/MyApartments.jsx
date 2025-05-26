@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -19,23 +20,22 @@ export default function MyApartments() {
     // const [updateApartment,setUpdategeApartment]=useState([])
     const [selectedApartment, setSelectedApartment] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const [isAddApartmentVisible, setIsAddApartmentVisible] = useState(false);
     const [apartment, setApartment] = useState();
-    const[updateVisible,setUpdateVisible]=useState(false)
+    const [updateVisible, setUpdateVisible] = useState(false)
 
-    const token = useSelector((state) => state.token.accessToken); // קבלת הטוקן מה-Redux
+    const { token, user } = useSelector((state) => state.token); // קבלת הטוקן מה-Redux
     console.log('Token from Redux:', token);
     const userId = useSelector((state) => state.token.user?._id); // קבלת מזהה המשתמש מהסטור
 
     useEffect(() => {
         if (userId) {
-            getApartments(userId);
+            getApartments();
         }
     }, []);
 
-    const getApartments = async (id) => {
+    const getApartments = async () => {
         try {
-            const { data } = await axios.get(`http://localhost:1100/api/apartment/user/${id}`,
+            const { data } = await axios.get(`http://localhost:1100/api/apartment/user/${userId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
 
@@ -63,21 +63,22 @@ export default function MyApartments() {
     //         });
     // }
     // פונקציה למחיקת דירה
-    const handleDelete = async (apartment) => {
-        await axios.delete(`http://localhost:1100/api/apartment/delete/${apartment._id}`,
-            // data: { _id: apartment._id } // שליחת ה-_id בתוך data
-            { headers: { Authorization: `Bearer ${token}` } }
-        )
-            .then((response) => {
-                console.log('Apartment deleted:', response.data);
-                // עדכון רשימת הדירות לאחר ההצלחה
-                setAllApartments((prevApartments) =>
-                    prevApartments.filter((apt) => apt._id !== apartment._id)
-                );
-            })
-            .catch((error) => {
-                console.error('Error deleting apartment:', error);
-            });
+    const handleDelete = async (apartmentId) => {
+        try {
+            console.log(token);
+
+            const { data2 } = await axios.delete(`http://localhost:1100/api/apartment/delete/${apartmentId}`, { headers: { Authorization: `Bearer ${token}` } })
+            alert('Apartment deleted:', data2);
+            // עדכון רשימת הדירות לאחר ההצלחה
+            getApartments();
+            // setAllApartments((prevApartments) =>
+            //     prevApartments.filter((apartment) => apartment._id !== apartmentId)
+            // );
+
+        }
+        catch (error) {
+            console.error('Error deleting apartment:', error);
+        };
     }
 
 
@@ -85,7 +86,7 @@ export default function MyApartments() {
 
         <div className="card flex justify-content-center flex-wrap gap-3">
             <CreateNewApartment getApartments={getApartments} />
-            <UpdateApartment apartment={Apartment} onClose={setUpdateVisible} updateVisible={updateVisible} setUpdateVisible={setUpdateVisible} getApartments={getApartments} />
+            <UpdateApartment apartment={apartment} onClose={setUpdateVisible} updateVisible={updateVisible} setUpdateVisible={setUpdateVisible} getApartments={getApartments} />
             {allApartments.length === 0 ? (
                 <p>No apartments available.</p>
             ) : (
@@ -99,11 +100,11 @@ export default function MyApartments() {
                         footer={
                             <div className="flex justify-content-between">
                                 <Button label="Details" icon="pi pi-info"
-                                    onClick={() => { setSelectedApartment(apartment), setIsModalVisible(true) }}/>
+                                    onClick={() => { setSelectedApartment(apartment); setIsModalVisible(true) }} />
                                 <Button label="Update" className="p-button-secondary" icon="pi-pencil"
-                                    onClick={() => (setApartment(apartment), setUpdateVisible(true))}/>
+                                    onClick={() => (setApartment(apartment), setUpdateVisible(true))} />
                                 <Button label="Delete" icon="pi-trash" className="p-button-danger"
-                                    onClick={() => (setApartment(apartment),setUpdateVisible(true))}/>
+                                    onClick={() => handleDelete(apartment._id)} />
                             </div>
                         }
 
@@ -113,12 +114,12 @@ export default function MyApartments() {
                     </Card>
                 ))
             )}
-            <Button label="Add Apartment" icon="pi pi-plus" onClick={() => setIsAddApartmentVisible(true)} />
+            {/* <Button label="Add Apartment" icon="pi pi-plus" onClick={() => setIsAddApartmentVisible(true)} />
             {isAddApartmentVisible && (
                 <CreateNewApartment
                     onClose={() => setIsAddApartmentVisible(false)}
                 />
-            )}
+            )} */}
 
             {/* מודאל להצגת פרטי הדירה */}
             <Dialog

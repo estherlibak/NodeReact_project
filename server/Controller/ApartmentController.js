@@ -109,8 +109,8 @@ const updateApartment = async (req, res) => {
     res.json(`'${updatedApartment.user} 'updated`)
 }
 const deleteApartment = async (req, res) => {
-    console.log(req.body)
-    const { _id } = req.body
+    console.log(req.params)
+    const { _id } = req.params
 
     if (!_id) {
         return res.status(400).json({ message: 'Apartment ID is required' });

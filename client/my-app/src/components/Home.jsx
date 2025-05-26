@@ -42,6 +42,12 @@ export default function Home() {
             command:() => navigate("/myApartments")
 
         },
+        {
+            label: 'MyFavorites',
+            icon: 'pi-pi-heart',
+            command:() => navigate("/MyFavoriteApartment")
+
+        },
 
     ];
 

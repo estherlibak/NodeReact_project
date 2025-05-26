@@ -17,6 +17,7 @@ app.use(express.json())
 app.use("/api/apartment",require("./Routes/Apartment"))
 app.use("/api/user",require("./Routes/User"))
 app.use('/api/auth',require('./Routes/authRoutes'))
+app.use('/api/myfavorite',require('./Routes/MyFavorite'))
 
 
 app.get('/',(req,res)=>{res.send("this is home page")})

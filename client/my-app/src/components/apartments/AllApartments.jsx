@@ -4,9 +4,12 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Dialog } from 'primereact/dialog';
 import { useDispatch, useSelector } from 'react-redux'
+import MyFavorite from './myFavorite/MyFavoriteApartment';
 
 export default function AllApartments() {
     const [allApartments, setAllApartments] = useState([]);
+    const [apartment, setApartment] = useState();
+
     const [selectedApartment, setSelectedApartment] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const { token, role, user } = useSelector((state) => state.token);
@@ -24,7 +27,7 @@ export default function AllApartments() {
         }
     }
 
-    
+
     useEffect(() => {
         getApartments();
 
@@ -32,6 +35,7 @@ export default function AllApartments() {
     return (
 
         <div className="card flex justify-content-center flex-wrap gap-3">
+            <MyFavorite apartment={apartment} />
             {allApartments && allApartments.map(apartment => (
 
                 <Card
@@ -40,6 +44,8 @@ export default function AllApartments() {
                     subTitle={`neighborhood: ${apartment.neighborhood || 'לא צוינה'}, street: ${apartment.street}, building: ${apartment.building}`}
                     footer={
                         <div className="flex justify-content-between">
+                            <Button onClick={() => MyFavorite(apartment)} icon="pi pi-heart" rounded text severity="help" aria-label="Favorite" />
+
                             <Button
                                 label="Details"
                                 icon="pi pi-info"

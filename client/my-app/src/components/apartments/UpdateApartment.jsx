@@ -28,7 +28,25 @@ export default function UpdateApartment({ apartment, onClose, updateVisible, set
     const [options, setOptions] = useState('');
 
     const { token, role, user } = useSelector((state) => state.token);
+    useEffect(() => {
+        console.log("apartment", apartment);
 
+        if (apartment) {
+
+            setCity(apartment.city || '');
+            setNeighborhood(apartment.neighborhood || '') // ניהול השכונה
+            setStreet(apartment.street || ''); // ניהול שם הרחוב
+            setBuilding(apartment.building || ''); // ניהול שם הבניין
+            setFloor(apartment.floor || ''); // ניהול הקומה
+            setPrice(apartment.price || ''); // ניהול מחיר הדירה
+            setSize(apartment.size || '') // ניהול גודל הדירה
+            setNumberOfRooms(apartment.numOfRooms || '') // ניהול מספר החדרים
+            setDescription(apartment.description || ''); // ניהול תיאור הדירה
+            setAirDirections(apartment.airDirections || '') // ניהול כיווני האוויר
+            setOptions(apartment.options || '') // ניהול אפשרויות נוסxxx
+
+        }
+    }, [apartment])
     const userId = useSelector((state) => state.token.user?._id); // קבלת מזהה המשתמש מהסטור
     const update = async () => {
         const apartmentData = {
@@ -85,25 +103,7 @@ export default function UpdateApartment({ apartment, onClose, updateVisible, set
         //  <CreateNewApartment/>
 
     }
-    useEffect(() => {
-        console.log("apartment", apartment);
 
-        if (apartment) {
-
-            setCity(apartment.city || '');
-            setNeighborhood(apartment.neighborhood || '') // ניהול השכונה
-            setStreet(apartment.street || ''); // ניהול שם הרחוב
-            setBuilding(apartment.building || ''); // ניהול שם הבניין
-            setFloor(apartment.floor || ''); // ניהול הקומה
-            setPrice(apartment.price || ''); // ניהול מחיר הדירה
-            setSize(apartment.size || '') // ניהול גודל הדירה
-            setNumberOfRooms(apartment.numOfRooms || '') // ניהול מספר החדרים
-            setDescription(apartment.description || ''); // ניהול תיאור הדירה
-            setAirDirections(apartment.airDirections || '') // ניהול כיווני האוויר
-            setOptions(apartment.options || '') // ניהול אפשרויות נוסxxx
-
-        }
-    }, [apartment])
 
     const resetFields = () => {
         setCity('');
@@ -132,72 +132,67 @@ export default function UpdateApartment({ apartment, onClose, updateVisible, set
                     }}
                 >
                     <div className="flex flex-column gap-3">
-                        <h2>Add New Apartment</h2>
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="city">City</label>
-                            <InputText id="city" type="text" value={city} onChange={(e) => setCity(e.target.value)} className="w-full"/>
+                        <label htmlFor="city">City</label>
+                        <InputText id="city" type="text" value={city} onChange={(e) => setCity(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="neighborhood">Neighborhood</label>
-                            <InputText id="neighborhood" type="text" value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)} className="w-full"
-                            />
+                        <label htmlFor="neighborhood">Neighborhood</label>
+                        <InputText id="neighborhood" type="text" value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)} className="w-full"
+                        />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="street">Street</label>
-                            <InputText id="street" type="text" value={street} onChange={(e) => setStreet(e.target.value)} className="w-full" />
+                        <label htmlFor="street">Street</label>
+                        <InputText id="street" type="text" value={street} onChange={(e) => setStreet(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="building">Building</label>
-                            <InputText id="building" type="text" value={building} onChange={(e) => setBuilding(e.target.value)} className="w-full" />
+                        <label htmlFor="building">Building</label>
+                        <InputText id="building" type="text" value={building} onChange={(e) => setBuilding(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="floor">Floor</label>
-                            <InputText id="floor" type="text" value={floor} onChange={(e) => setFloor(e.target.value)} className="w-full" />
+                        <label htmlFor="floor">Floor</label>
+                        <InputText id="floor" type="text" value={floor} onChange={(e) => setFloor(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="price">Price</label>
-                            <InputText id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)}  className="w-full" />
+                        <label htmlFor="price">Price</label>
+                        <InputText id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="size">Size</label>
-                            <InputText id="size" type="number" value={size} onChange={(e) => setSize(e.target.value)} className="w-full" />
+                        <label htmlFor="size">Size</label>
+                        <InputText id="size" type="number" value={size} onChange={(e) => setSize(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="numberOfRooms">Number of Rooms</label>
-                            <InputText id="numberOfRooms" type="number" value={numberOfRooms} onChange={(e) => setNumberOfRooms(e.target.value)} className="w-full" />
+                        <label htmlFor="numberOfRooms">Number of Rooms</label>
+                        <InputText id="numberOfRooms" type="number" value={numberOfRooms} onChange={(e) => setNumberOfRooms(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="description">Description</label>
-                            <InputText id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full" />
+                        <label htmlFor="description">Description</label>
+                        <InputText id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="airDirections">Air Directions</label>
-                            <InputText
-                                id="airDirections" type="text" value={airDirections} onChange={(e) => setAirDirections(e.target.value)} className="w-full" />
+                        <label htmlFor="airDirections">Air Directions</label>
+                        <InputText
+                            id="airDirections" type="text" value={airDirections} onChange={(e) => setAirDirections(e.target.value)} className="w-full" />
                         {/* </div> */}
 
                         {/* <div className="flex flex-column gap-2"> */}
-                            <label htmlFor="options">Options</label>
-                            <InputText id="options" type="text" value={options} onChange={(e) => setOptions(e.target.value.split(','))} className="w-full" />
+                        <label htmlFor="options">Options</label>
+                        <InputText id="options" type="text" value={options} onChange={(e) => setOptions(e.target.value.split(','))} className="w-full" />
                         {/* </div> */}
 
                         <div className="flex justify-content-between">
-                            {/* <button onClick={()=>} type="button" className="p-button p-component p-button-primary"> */}
-                                {/* <span className="p-button-label">update Apartment</span>
-                            </button> */}
-                            <button onClick={() => setUpdateVisible(false)} className="p-button p-component p-button-secondary">
-                                <span className="p-button-label">cancel</span>
-                            </button>
+                            <Button label="save" onClick={() => update()} />
+                            <Button label="cancel" onClick={() => setUpdateVisible(false)} />
                         </div>
                     </div>
                 </Dialog >
