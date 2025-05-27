@@ -42,7 +42,7 @@ const createNewApartment = async (req, res) => {
     }
 
 }
-
+//אישור דירה
 const logInApartment = async (req, res) => {
     const { _id } = req.body
     if (!_id) {
@@ -55,6 +55,7 @@ const logInApartment = async (req, res) => {
     const updatedApartment = await apartment.save()
     res.json(`'${updatedApartment.user} 'updated`)
 }
+//אישור קניה דירה
 const ApartmentConfirm = async (req, res) => {
     const { _id } = req.body
     if (!_id) {
@@ -63,7 +64,20 @@ const ApartmentConfirm = async (req, res) => {
     const apartment = await Apartment.findById(_id).exec()
     if (!apartment)
         return res.status(400).json({ message: 'apartment not found' })
-    apartment.purchaseConfirm = true
+        apartment.purchaseConfirm = true
+    const updatedApartment = await apartment.save()
+    res.json(`'${updatedApartment.user} 'updated`)
+}
+//אישור קניה דירה
+const deletConfirmedApartment = async (req, res) => {
+    const { _id } = req.body
+    if (!_id) {
+        return res.status(400).json({ message: 'Apartment ID is required' });
+    }
+    const apartment = await Apartment.findById(_id).exec()
+    if (!apartment)
+        return res.status(400).json({ message: 'apartment not found' })
+        apartment.purchaseConfirm = true
     const updatedApartment = await apartment.save()
     res.json(`'${updatedApartment.user} 'updated`)
 }
@@ -71,14 +85,22 @@ const ApartmentConfirm = async (req, res) => {
 
 
 
-//תצוגת כל הדירות
+//תצוגת כל הדירות המאושרותת
 const getAllApartments = async (req, res) => {
     const apartment = await Apartment.find({ isConfirm: true }).lean()
     if (!apartment?.length) {
         return res.status(400).json({ message: 'No apartment found' })
     }
     res.json(apartment)
+}
 
+//תצוגת כל הדירות המאושרותת
+const getUnConfirmedApartments = async (req, res) => {
+    const apartment = await Apartment.find({ isConfirm: false }).lean()
+    if (!apartment?.length) {
+        return res.status(400).json({ message: 'No apartment found' })
+    }
+    res.json(apartment)
 }
 const updateApartment = async (req, res) => {
     const { _id, user, city, neighborhood, street, building, floor, price, img, size, numOfRooms, airDirections, discreption, options } = req.body
@@ -175,5 +197,7 @@ module.exports = {
     // deleteMyApartment,
     ApartmentConfirm,
     logInApartment,
-    deleteApartment
+    deleteApartment,
+    getUnConfirmedApartments,
+    deletConfirmedApartment
 }

@@ -4,7 +4,8 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Dialog } from 'primereact/dialog';
 import { useDispatch, useSelector } from 'react-redux'
-import MyFavorite from './myFavorite/MyFavoriteApartment';
+import MyFavorite from './MyFavoriteApartment';
+import MyApartments from './MyApartments';
 
 export default function AllApartments() {
     const [allApartments, setAllApartments] = useState([]);
@@ -27,6 +28,25 @@ export default function AllApartments() {
         }
     }
 
+    const createMyApartment = async (apartment) => {
+        const myApartmentData = {
+            user: user._id,
+            apartment: apartment._id
+        }
+        try {
+            const { data } = await axios.post('http://localhost:1100/api/myapartments', myApartmentData,
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
+
+            console.log('MyApartment created:', data);
+        }
+        catch (error) {
+            if (error.response && error.response.status === 401) {
+                alert('דירה זו כבר קיימת ברשימת הדירות שלך.'); // הודעה למשתמש במקרה של שגיאה 401
+                console.error('Error creating MyApartment:', error);
+            }
+        }
+    }
 
     useEffect(() => {
         getApartments();
@@ -35,7 +55,7 @@ export default function AllApartments() {
     return (
 
         <div className="card flex justify-content-center flex-wrap gap-3">
-            <MyFavorite apartment={apartment} />
+            
             {allApartments && allApartments.map(apartment => (
 
                 <Card
@@ -44,7 +64,7 @@ export default function AllApartments() {
                     subTitle={`neighborhood: ${apartment.neighborhood || 'לא צוינה'}, street: ${apartment.street}, building: ${apartment.building}`}
                     footer={
                         <div className="flex justify-content-between">
-                            <Button onClick={() => MyFavorite(apartment)} icon="pi pi-heart" rounded text severity="help" aria-label="Favorite" />
+                            <Button onClick={(() => createMyApartment(apartment))} icon="pi pi-heart" rounded text severity="help" aria-label="Favorite" />
 
                             <Button
                                 label="Details"

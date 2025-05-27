@@ -12,9 +12,11 @@ router.get("/user/:id",apartmentController.getApartmentByUserId)
 router.post("/",verifyJWT,apartmentController.createNewApartment)
 router.post("/login",apartmentController.logInApartment)
 router.put('/',verifyJWT,apartmentController.updateApartment)
-router.delete('/delete/:_id',verifyJWT,apartmentController.deleteApartment)
+router.delete('/:_id',verifyJWT,apartmentController.deleteApartment)
 router.put('/',verifyJWT,managerJWT,apartmentController.logInApartment)
 router.put('/confirm',verifyJWT,managerJWT,apartmentController.ApartmentConfirm)
+router.get('/unConfirmed',managerJWT,apartmentController.getUnConfirmedApartments)
+router.put('/myapartments', verifyJWT, apartmentController.deletConfirmedApartment)
 
 router.use(verifyJWT,managerJWT)
 
@@ -24,7 +26,7 @@ router.get('/protected', verifyJWT, (req, res) => {
     res.json({ message: `Welcome, ${req.user.name}` });
 });
 
-router.get('/manager-only', verifyJWT, managerJWT, (req, res) => {
+router.get('/manager-only', managerJWT, (req, res) => {
     res.json({ message: `Hello Manager, ${req.user.name}` });
 });
 

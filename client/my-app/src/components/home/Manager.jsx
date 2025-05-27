@@ -1,6 +1,4 @@
 import React, {useState, useEffect } from "react";
-import LoginDemo from "./logIn/LogIn";
-
 import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
 import { Badge } from 'primereact/badge';
@@ -8,16 +6,13 @@ import { Avatar } from 'primereact/avatar';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
-import { logOut } from "../redux/tokenSlice";
-import AllApartments from "./apartments/AllApartments";
+import { logOut } from "../../redux/tokenSlice";
 
 
-export default function Home() {
+
+export default function HomeManager() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const [showAllApartments, setShowAllApartments] = useState(false);
-
-
 
     const itemRenderer = (item) => (
 
@@ -32,20 +27,20 @@ export default function Home() {
 
     const items = [
         {
-            label: 'Home',
+            label: 'ConfirmedApartments',
             icon: 'pi pi-home',
-            command : () => navigate("/allApartments")
+            command : () => navigate("/ConfirmedApartments")
         },
         {
-            label: 'MyApartments',
+            label: 'ToConfirm',
             icon: 'pi pi-star',
-            command:() => navigate("/myApartments")
+            command:() => navigate("/UnConfirmedApartments")
 
         },
         {
-            label: 'MyFavorites',
+            label: 'Users',
             icon: 'pi-pi-heart',
-            command:() => navigate("/MyFavoriteApartment")
+            command:() => navigate("/Users")
 
         },
 
@@ -66,8 +61,6 @@ export default function Home() {
         <div className="card">
 
             <Menubar model={items} end={end} />
-            {/* הצגת AllApartments רק אם המשתמש מחובר */}
-            {/* <AllApartments /> */}
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Card } from 'primereact/card';
-import MyApartments from '../MyApartments';
+import MyApartments from './MyApartments';
 
 export default function MyFavorite(apartment) {
     console.log('Adding to favorites:', apartment);
@@ -19,11 +19,6 @@ export default function MyFavorite(apartment) {
     const { token, role, user } = useSelector((state) => state.token);
     const userId = useSelector((state) => state.token.user?._id)
 
-    const favoriteApartmentData = {
-        myApartment: apartment._id, // הוספת מזהה הדירה לעדכון
-        myFavorite: true
-    }
-
     useEffect(() => {
         if (userId)
             getMyFavoriteApartments()
@@ -32,7 +27,7 @@ export default function MyFavorite(apartment) {
     const getMyFavoriteApartments = async () => {
 
         try {
-            const { data } = await axios.get(`http://localhost:1100/api/apartment/favorite`,favoriteApartmentData,
+            const { data } = await axios.get(`http://localhost:1100/api/myapartments`,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             console.log('favoriteApartment added:', data);
@@ -47,7 +42,7 @@ export default function MyFavorite(apartment) {
     }
     const deleteMyFavorite = async (aprtmentId) => {
         try {
-            const { data } = await axios.delete(`http://localhost:1100/api/apartment/favorite/delete${aprtmentId}`,
+            const { data } = await axios.delete(`http://localhost:1100/api/myapartments/${aprtmentId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             alert('favorite Apartment deleted:', data);
@@ -60,20 +55,20 @@ export default function MyFavorite(apartment) {
 
     return (
         <div className="card flex justify-content-center flex-wrap gap-3">
-            {allApartments.length === 0 ? (
+            {allApartments?.length === 0 ? (
                 <p>No favorite apartments.</p>
             ) : (
-                allApartments.map((apartment) => (
+                allApartments?.map((apartment) => (
 
                     <Card
-                        key={apartment._id} // ודא שלכל דירה יש מזהה ייחודי
-                        title={`${apartment.city}`}
-                        subTitle={`neighborhood: ${apartment.neighborhood || 'לא צוינה'}, street: ${apartment.street}, building: ${apartment.building}`}
+                        key={apartment.apartment._id} // ודא שלכל דירה יש מזהה ייחודי
+                        title={`${apartment.apartment.city}`}
+                        subTitle={`neighborhood: ${apartment.apartment.neighborhood || 'לא צוינה'}, street: ${apartment.apartment.street}, building: ${apartment.apartment.building}`}
                         footer={
                             <div className="flex justify-content-between">
                                 <Button label="Details" icon="pi pi-info"
-                                    onClick={() => { setSelectedApartment(apartment); setIsModalVisible(true) }} />
-                                <Button onClick={() => deleteMyFavorite(apartment._id)} icon="pi pi-heart" rounded text severity="help" aria-label="Favorite" />
+                                    onClick={() => { setSelectedApartment(apartment.apartment); setIsModalVisible(true) }} />
+                                <Button onClick={() => deleteMyFavorite(apartment._id)} icon="pi pi-heart" rounded text severity="help" aria-label="Favorite"  style={{ color: "red" }} />
 
                             </div>
                         }

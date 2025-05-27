@@ -3,9 +3,9 @@ import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import SignUp from './SignUp';
-import {useDispatch,useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
-import Home from '../Home';
+// import Home from '../home/User';
 import axios from 'axios';
 import { setUser } from '../../redux/tokenSlice';
 import { setToken } from '../../redux/tokenSlice';
@@ -17,7 +17,7 @@ export default function LoginDemo() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); // יצירת פונקציית ניווט
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
     const handleLogin = () => {
         // שליחת בקשה לשרת
@@ -31,8 +31,11 @@ export default function LoginDemo() {
                 dispatch(setRole(response.data.role)); // עדכון הסטור של התפקיד
                 console.log('Token:', response.data.accessToken);
                 // setIsLoggedIn(true); // עדכון מצב הכניסה
-                navigate('/Home'); // נווט לדף הבית
-
+                // navigate('/Home'); // נווט לדף הבית
+                if (response.data.role == "User")
+                    navigate('/AllApartments')
+                else
+                    navigate('/ConfimedApartments')
                 // נווט לדף הבית
                 // if (!response.ok) {
                 //     throw new Error('Invalid credentials');

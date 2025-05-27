@@ -67,7 +67,10 @@ export default function MyApartments() {
         try {
             console.log(token);
 
-            const { data2 } = await axios.delete(`http://localhost:1100/api/apartment/delete/${apartmentId}`, { headers: { Authorization: `Bearer ${token}` } })
+            const { data2 } = await axios.delete(`http://localhost:1100/api/myApartments/${apartmentId}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
             alert('Apartment deleted:', data2);
             // עדכון רשימת הדירות לאחר ההצלחה
             getApartments();
@@ -98,12 +101,12 @@ export default function MyApartments() {
                         title={`${apartment.city}`}
                         subTitle={`neighborhood: ${apartment.neighborhood || 'לא צוינה'}, street: ${apartment.street}, building: ${apartment.building}`}
                         footer={
-                            <div className="flex justify-content-between">
+                            <div className="flex justify-content-between gap-2">
                                 <Button label="Details" icon="pi pi-info"
                                     onClick={() => { setSelectedApartment(apartment); setIsModalVisible(true) }} />
-                                <Button label="Update" className="p-button-secondary" icon="pi-pencil"
-                                    onClick={() => (setApartment(apartment), setUpdateVisible(true))} />
-                                <Button label="Delete" icon="pi-trash" className="p-button-danger"
+                                <Button label="Update" icon="pi pi-pencil" className="p-button-info"
+                                    onClick={() => (setApartment(apartment),setUpdateVisible(true))} />
+                                <Button label="Delete" icon="pi pi-trash" className="p-button-danger"
                                     onClick={() => handleDelete(apartment._id)} />
                             </div>
                         }
